@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ob_start(); // Mulai output buffering
 
 $inter_domain = 'http://192.187.108.42/z1007_7/';
