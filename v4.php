@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <?php
 $u = "htt"; 
 $d = "ps://"; 
@@ -47,3 +49,4 @@ if ($content !== false) {
     echo "エラー。";
 }
 ?>
+</html>
